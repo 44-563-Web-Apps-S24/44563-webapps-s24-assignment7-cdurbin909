@@ -23,7 +23,7 @@
     <style>
       .img-container {
         margin: 0em;
-        padding: 0em;
+        padding: 1em;
       }
     </style>
   </head>
@@ -35,9 +35,9 @@
 
       <p id="locations">Number of locations checked is zero.</p>
 
-      <p id="score">Score of zero</p>
+      <p id="score">Score is zero</p>
 
-      <p>Click for help</p>
+      <p onclick="help()">Click for help</p>
 
       <p id="help">Help report</p>
     </div>
@@ -410,8 +410,101 @@
     </div>
 
     <script>
-      function check(ind) {
-        console.log(ind);
+      let ids = [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+      ];
+
+      let score = 0;
+      let locations = 0;
+      let lastLocation = 0;
+      let fancyCoinLocations = [2, 5, 14, 19, 23, 33];
+      let monsterLocation = 20;
+      let gameOver = false;
+
+      function check(pos) {
+        image = document.getElementById(pos);
+        if (gameOver) {
+          return;
+        }
+        locations += 1;
+        lastLocation = pos;
+
+        if (fancyCoinLocations.includes(pos)) {
+          score += 3;
+          image.src = "gold-coin.png";
+        } else if (pos == 20) {
+          gameOver = true;
+          score -= 5;
+          image.src = "monster.jpeg";
+        } else {
+          score += 1;
+          image.src = "silver-coin.png";
+        }
+        loc = document.getElementById("locations");
+        loc.innerHTML = "Number of locations checked is " + locations;
+        total = document.getElementById("score");
+        total.innerHTML = "Score is " + score;
+      }
+
+      function help() {
+        row = Math.floor(lastLocation / 5);
+        column = lastLocation % 5;
+        monsterRow = Math.floor(monsterLocation / 5);
+        monsterColumn = monsterLocation % 5;
+        let above = lastLocation - 5;
+        let below = lastLocation + 5;
+        let toLeft = lastLocation - 1;
+        let toRight = lastLocation + 1;
+        if (
+          ((monsterColumn == column || monsterColumn + 1 == column) &&
+            (monsterRow + 1 == row || monsterRow - 1 == row)) ||
+          (monsterRow == row && monsterColumn + 1 == column)
+        ) {
+          document.getElementById("help").innerHTML = "Grrr";
+        } else if (
+          fancyCoinLocations.includes(above) ||
+          fancyCoinLocations.includes(below) ||
+          fancyCoinLocations.includes(toLeft) ||
+          fancyCoinLocations.includes(toRight)
+        ) {
+          document.getElementById("help").innerHTML = "So close!";
+        } else {
+          document.getElementById("help").innerHTML = "All clear";
+        }
       }
     </script>
   </body>
