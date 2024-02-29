@@ -23,7 +23,7 @@
       <p>Count</p>
     </div>
 
-    <button type="button" class="btn btn-primary" onclick="buttonPress2()">
+    <button type="button" class="btn btn-primary" onclick="startTime()">
       Start Timer
     </button>
 
@@ -33,23 +33,33 @@
 
     <script>
       let stopTime;
+      function startTime() {
+        // countdown
+        for (let i = 0; i < 5; i++) {
+          setTimeout(
+            function () {
+              document.getElementById("counter").innerHTML = i;
+            },
+            (4 - i) * 1000,
+          );
+        }
+        setTimeout(function () {
+          if (stopTime == "undefined") {
+            // too slow
+            document.getElementById("target").innerHTML = "Too Slow";
+          } else {
+            // calculate the time
+            let elapsedTime = Date.now() - stopTime;
+            document.getElementById("target").innerHTML =
+              "Time was " + elapsedTime;
+          }
+        }, 4000);
+      }
+
       function recordTime() {
         stopTime = Date.now();
         console.log(stopTime);
       }
-
-      function buttonPress1() {
-        setTimeout(function () {
-          document.getElementById("target").style.color = "red";
-        }, 3000);
-      }
-
-      function buttonPress2() {
-        setTimeout(() => {
-          document.getElementById("target").style.color = "red";
-        }, 3000);
-      }
     </script>
   </body>
 </html>
-
